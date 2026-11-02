@@ -6,7 +6,6 @@
 
 <h1>Create</h1>
 
-<h4>Item</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -21,7 +20,9 @@
 
             <div class="form-group">
                 <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
+                <select asp-for="Category" class="form-select"
+                        asp-items="Html.GetEnumSelectList<GMS_Jospeh_Thomas.Models.ItemCategory>()">
+                </select>
                 <span asp-validation-for="Category" class="text-danger"></span>
             </div>
 

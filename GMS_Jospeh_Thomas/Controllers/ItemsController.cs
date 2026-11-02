@@ -1,8 +1,9 @@
 
+using GMS_Jospeh_Thomas.Data;
+using GMS_Jospeh_Thomas.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GMS_Jospeh_Thomas.Models;
-using GMS_Jospeh_Thomas.Data;
+using static System.Net.WebRequestMethods;
 
 public class ItemsController : Controller
 {
@@ -143,8 +144,48 @@ public class ItemsController : Controller
         return RedirectToAction(nameof(Index));
     }
 
+    // GET: /Items/Filter?
+    public async Task<IActionResult> Filter(ItemCategory? category)
+    {
+        ViewBag.SelectedCategory = category?.ToString();
+        ViewBag.Searched = category.HasValue;
+
+        if (!category.HasValue)
+        {
+            return View(new List<Item>());
+        }
+
+        var items = await _context.Items
+            .Where(i => i.Category == category.Value)
+            .OrderBy(i => i.Name)
+            .ToListAsync();
+
+        return View(items);
+    }
+
+    // GET: /Items/PriceSearch?price=5
+    public async Task<IActionResult> PriceSearch(decimal? price)
+    {
+        ViewBag.Price = price;
+        ViewBag.Searched = price.HasValue;
+
+        if (!price.HasValue)
+        {
+            return View(new List<Item>());
+        }
+
+        var items = await _context.Items
+            .Where(i => i.Price > price.Value)
+            .OrderByDescending(i => i.Price)
+            .ToListAsync();
+
+        return View(items);
+    }
+
     private bool ItemExists(int? itemid)
     {
         return _context.ItemInfos.Any(e => e.ItemId == itemid);
     }
+
+
 }
