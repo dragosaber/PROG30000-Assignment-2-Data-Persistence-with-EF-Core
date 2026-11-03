@@ -3,7 +3,6 @@ using GMS_Jospeh_Thomas.Data;
 using GMS_Jospeh_Thomas.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.WebRequestMethods;
 
 public class ItemsController : Controller
 {
@@ -17,7 +16,7 @@ public class ItemsController : Controller
     // GET: ITEMS
     public async Task<IActionResult> Index()    
     {
-        return View(await _context.ItemInfos.ToListAsync());
+        return View(await _context.Items.ToListAsync());
     }
 
     // GET: ITEMS/Details/5
@@ -28,7 +27,7 @@ public class ItemsController : Controller
             return NotFound();
         }
 
-        var item = await _context.ItemInfos
+        var item = await _context.Items
             .FirstOrDefaultAsync(m => m.ItemId == itemid);
         if (item == null)
         {
@@ -68,7 +67,7 @@ public class ItemsController : Controller
             return NotFound();
         }
 
-        var item = await _context.ItemInfos.FindAsync(itemid);
+        var item = await _context.Items.FindAsync(itemid);
         if (item == null)
         {
             return NotFound();
@@ -119,7 +118,7 @@ public class ItemsController : Controller
             return NotFound();
         }
 
-        var item = await _context.ItemInfos
+        var item = await _context.Items
             .FirstOrDefaultAsync(m => m.ItemId == itemid);
         if (item == null)
         {
@@ -134,10 +133,10 @@ public class ItemsController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int? itemid)
     {
-        var item = await _context.ItemInfos.FindAsync(itemid);
+        var item = await _context.Items.FindAsync(itemid);
         if (item != null)
         {
-            _context.ItemInfos.Remove(item);
+            _context.Items.Remove(item);
         }
 
         await _context.SaveChangesAsync();
@@ -155,7 +154,7 @@ public class ItemsController : Controller
             return View(new List<Item>());
         }
 
-        var items = await _context.ItemInfos
+        var items = await _context.Items
             .Where(i => i.Category == category.Value)
             .OrderBy(i => i.Name)
             .ToListAsync();
@@ -174,7 +173,7 @@ public class ItemsController : Controller
             return View(new List<Item>());
         }
 
-        var items = await _context.ItemInfos
+        var items = await _context.Items
             .Where(i => i.Price > price.Value)
             .OrderByDescending(i => i.Price)
             .ToListAsync();
@@ -184,7 +183,7 @@ public class ItemsController : Controller
 
     private bool ItemExists(int? itemid)
     {
-        return _context.ItemInfos.Any(e => e.ItemId == itemid);
+        return _context.Items.Any(e => e.ItemId == itemid);
     }
 
 
