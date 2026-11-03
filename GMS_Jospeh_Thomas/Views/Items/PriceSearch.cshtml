@@ -1,5 +1,56 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model IEnumerable<GMS_Jospeh_Thomas.Models.Item>
+
 @{
+    ViewData["Title"] = "Price Search";
 }
+
+<h1>Price Search</h1>
+
+<form asp-action="PriceSearch" method="get" class="row g-2 mb-4">
+    <div class="col-auto">
+        <label for="price" class="col-form-label">Show items with a price greater than:</label>
+    </div>
+    <div class="col-auto">
+        <input type="number" id="price" name="price" step="0.01" min="0"
+               value="@ViewBag.Price" class="form-control" required />
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary">Search</button>
+    </div>
+</form>
+
+@if (ViewBag.Searched == true)
+{
+    if (!Model.Any())
+    {
+        <p>No items found with a price greater than @(((decimal)ViewBag.Price).ToString("C")).</p>
+    }
+    else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Html.DisplayNameFor(model => model.Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Category)</th>
+                    <th>@Html.DisplayNameFor(model => model.PurchaseDate)</th>
+                    <th>@Html.DisplayNameFor(model => model.Quantity)</th>
+                    <th>@Html.DisplayNameFor(model => model.Price)</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(modelItem => item.Name)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Category)</td>
+                        <td>@Html.DisplayFor(modelItem => item.PurchaseDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Quantity)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+}
+
+<a asp-controller="Home" asp-action="Index">Back to Home</a>

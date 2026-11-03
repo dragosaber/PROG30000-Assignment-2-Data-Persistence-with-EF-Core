@@ -155,7 +155,7 @@ public class ItemsController : Controller
             return View(new List<Item>());
         }
 
-        var items = await _context.Items
+        var items = await _context.ItemInfos
             .Where(i => i.Category == category.Value)
             .OrderBy(i => i.Name)
             .ToListAsync();
@@ -174,7 +174,7 @@ public class ItemsController : Controller
             return View(new List<Item>());
         }
 
-        var items = await _context.Items
+        var items = await _context.ItemInfos
             .Where(i => i.Price > price.Value)
             .OrderByDescending(i => i.Price)
             .ToListAsync();
